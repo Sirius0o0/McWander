@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+const base=process.argv[2]||'http://127.0.0.1:4173';
+const get=path=>fetch(base+path,{signal:AbortSignal.timeout(5000)});
+assert.equal((await get('/?demo=1')).status,200);
+for(const path of ['/app.js','/walk.css','/map.js','/assets/street-corner.svg'])assert.equal((await get(path)).status,200);
+const status=await (await get('/api/status')).json();assert.equal(status.mcd,true);assert.equal(status.amap,true);assert.equal(status.readOnly,true);
+const claim=await fetch(base+'/api/meals/claim',{method:'POST',headers:{Origin:base,'Content-Type':'application/json'},body:'{}'});assert.equal(claim.status,403);
+const invalid=await fetch(base+'/api/plan',{method:'POST',headers:{Origin:base,'Content-Type':'application/json'},body:'null'});assert.ok([422,429].includes(invalid.status));
+assert.equal((await get('/api/map?id=anything')).status,404);
+assert.equal((await get('/.env.local')).status,404);
+console.log(JSON.stringify({page:'accessible',assets:'accessible',queryApis:'enabled',accountMutations:'blocked',envFile:'not served',base}));

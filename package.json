@@ -1,0 +1,6 @@
+{
+  "name": "mcwander", "version": "0.1.0", "private": true, "type": "module",
+  "description": "McWander 麦步 — 移动端 Citywalk 路线规划与沿途麦当劳优惠查价",
+  "scripts": { "dev": "node --env-file=.env.local server.mjs", "dev:lan": "node --env-file=.env.local server.mjs --lan", "start": "node --env-file=.env.local server.mjs", "test": "node --test tests/*.test.mjs", "doctor": "node --env-file=.env.local scripts/doctor.mjs" },
+  "engines": { "node": ">=22" }
+}
